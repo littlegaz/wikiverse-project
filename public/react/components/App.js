@@ -30,6 +30,17 @@ export const App = () => {
     setIsAddingPage(false)
   }
 
+  async function deletePage(id) {
+    await fetch(`${apiURL}/wiki/${id}`, {
+      method: 'DELETE'
+    })
+
+    setPages(pages.filter(page => page.id !== id))
+    if (activePage && activePage.id === id) {
+      setActivePage(null)
+    }
+  }
+
   useEffect(() => {
     async function fetchPages() {
       try {
@@ -76,6 +87,14 @@ export const App = () => {
             >
               {page.title}
             </button>
+            <button
+              className="link"
+              type="button"
+              onClick={() => deletePage(page.id)}
+              style={{ marginLeft: '10px', color: 'red' }}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>
@@ -91,3 +110,5 @@ export const App = () => {
     </main>
   )
 }
+
+export default App
